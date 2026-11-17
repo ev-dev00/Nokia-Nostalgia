@@ -8,23 +8,40 @@
     <link rel="stylesheet" href="css/color-palette.css" />
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/styles.css" />
+
   </head>
 </head>
 <body class="page-wrapper">
-     <header>
-        <h1>NOKIA NOSTALGIA</h1>
-    </header>
-    <main class = "main">
-        <div class="game-container">
-            <div class="game-screen">
-                <div class="game-display">
-                    <div class="game-content">
-                        <p>Game content goes here...</p>
-                    </div>
-                </div>
+    <main id ="app">
+         <section id="start-screen">
+            <h1> GAME TITLE </h2>
+            <div id="info-wrapper">
+                <h2>RULES</h2>
+                <p>Here will be the rules Here will be the rules 
+                    Here will be the rules Here will be the rules 
+                    Here will be the rules Here will be the rules 
+                    Here will be the rules </p>
             </div>
-        </div>
-        
+            <div id="challenge-wrapper">
+                <button>EASY</button>
+                <button>NORMAL</button>
+                <button>HARD</button>
+            </div>
+            <div id="btn">
+                <p>Press Enter to start</p>
+                <button>START!</button>
+            </div>
+         </section>
+         <section id="play-screen">
+            <p> Score: <span class="score">-</span> <p>
+            <p> High Score: <span class="high-score">-</span> </p>
+            <div class="cell"></div>
+            <button>Pause</button>
+         </section>
+         <section id="end-screen"></section>
     </main>
+    <footer>
+        <script src="scripts/main.js"></script>
+    </footer>
 </body>
 </html>
