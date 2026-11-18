@@ -19,9 +19,27 @@ function createBoard(rows, col) {
   return grid
 }
 
-const jungle = createBoard(30, 30)
-const rows = 30
-const cols = 30
+const jungle = createBoard(31, 31)
+const rows = 31
+const cols = 31
+
+let snake = {
+  name: "nagini",
+  body: [
+    [15, 14],
+    [15, 15],
+    [15, 16],
+  ],
+}
+
+function isOnSnake(x, y) {
+  for (let i = 0; i < snake.body.length; i++) {
+    if (snake.body[i][0] === x && snake.body[i][1] === y) {
+      return true
+    }
+  }
+  return false
+}
 
 let foodPosition = null
 const placeFood = function (x, y) {
@@ -33,9 +51,66 @@ const placeFood = function (x, y) {
 }
 
 function randomFood() {
-  const x = Math.floor(Math.random() * cols)
-  const y = Math.floor(Math.random() * rows)
+  let x = Math.floor(Math.random() * cols)
+  let y = Math.floor(Math.random() * rows)
+
+  while (isOnSnake(x, y)) {
+    x = Math.floor(Math.random() * cols)
+    y = Math.floor(Math.random() * rows)
+  }
   placeFood(x, y)
 }
 
+function drawSnake() {
+  for (let i = 0; i < snake.body.length; i++) {
+    const piece = snake.body[i]
+    const x = piece[0]
+    const y = piece[1]
+    const cell = jungle[y][x]
+
+    cell.classList.add("snake-body")
+
+    if (i === 0) {
+      cell.classList.add("snake-head")
+    }
+  }
+}
+
+let dirX = 0
+let dirY = -1
+
+function undrawSnake() {
+  for (let i = 0; i < snake.body.length; i++) {
+    const x = snake.body[i][0]
+    const y = snake.body[i][1]
+    jungle[y][x].classList.remove("snake-body")
+    jungle[y][x].classList.remove("snake-head")
+  }
+}
+
+function moveSnake() {
+  undrawSnake()
+
+  const newX = snake.body[0][0] + dirX
+  const newY = snake.body[0][1] + dirY
+
+  snake.body.unshift([newX, newY])
+
+  let ateFood = false
+  if (newX === foodPosition[0]) {
+    if (newY === foodPosition[1]) {
+      ateFood = true
+    }
+  }
+
+  if (ateFood) {
+    randomFood()
+  } else {
+    snake.body.pop()
+  }
+  drawSnake()
+}
+
+drawSnake()
 randomFood()
+moveSnake()
