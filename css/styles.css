@@ -46,3 +46,7 @@
 .snake-head {
   background-color: #ffffff;
 }
+
+.flash {
+  background-color: rgb(90, 153, 99);
+}

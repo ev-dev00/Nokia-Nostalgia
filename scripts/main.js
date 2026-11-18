@@ -23,11 +23,20 @@ const jungle = createBoard(31, 31)
 
 const gameState = {
   score: 0,
-  highScore: 0,
+  highScore: Number(localStorage.getItem("highScore")),
 
   updateScore: function () {
     const scoreElement = document.getElementById("score")
+    const highScoreElement = document.getElementById("high-score")
+
     scoreElement.textContent = gameState.score
+
+    if (gameState.score > gameState.highScore) {
+      gameState.highScore = gameState.score
+      localStorage.setItem("highScore", gameState.highScore)
+    }
+
+    highScoreElement.textContent = gameState.highScore
   },
 
   speed: 150,
@@ -64,6 +73,50 @@ const snake = {
     }
     return false
   },
+
+  flashTimer: null,
+  flashShake: function () {
+    for (let i = 0; i < snake.body.length; i++) {
+      const x = snake.body[i][0]
+      const y = snake.body[i][1]
+      jungle[y][x].classList.toggle("flash")
+    }
+  },
+}
+
+function resetGame() {
+  undrawSnake()
+
+  snake.body = [
+    [15, 14],
+    [15, 15],
+    [15, 16],
+  ]
+  dirX = 0
+  dirY = -1
+  lastDirX = 0
+  lastDirY = -1
+
+  gameState.score = 0
+  gameState.updateScore()
+
+  drawSnake()
+  randomFood()
+}
+
+function gameOver() {
+  gameState.stopGame()
+
+  let switches = 0
+  snake.flashTimer = setInterval(function () {
+    snake.flashShake()
+    switches++
+
+    if (switches === 10) {
+      clearInterval(snake.flashTimer)
+      resetGame()
+    }
+  }, 300)
 }
 
 let foodPosition = null
@@ -142,12 +195,27 @@ document.addEventListener("keydown", function (event) {
 })
 
 function moveSnake() {
+  const newX = snake.body[0][0] + dirX
+  const newY = snake.body[0][1] + dirY
+
+  if (
+    newX < 0 ||
+    newX >= jungle[0].length ||
+    newY < 0 ||
+    newY >= jungle.length
+  ) {
+    gameOver()
+    return
+  }
+
+  if (snake.isHere(newX, newY)) {
+    gameOver()
+    return
+  }
+
   lastDirX = dirX
   lastDirY = dirY
   undrawSnake()
-
-  const newX = snake.body[0][0] + dirX
-  const newY = snake.body[0][1] + dirY
 
   snake.body.unshift([newX, newY])
 
