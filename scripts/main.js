@@ -21,9 +21,15 @@ function createBoard(rows, col) {
 
 const jungle = createBoard(31, 31)
 
+function warnBeforeLeaving(event) {
+  event.preventDefault()
+  event.returnValue = ""
+}
+
 const gameState = {
   score: 0,
   highScore: Number(localStorage.getItem("highScore")),
+  phase: "ready",
 
   updateScore: function () {
     const scoreElement = document.getElementById("score")
@@ -50,6 +56,8 @@ const gameState = {
 
   startGame: function () {
     clearInterval(gameState.gameTimer)
+    gameState.phase = "playing"
+    window.addEventListener("beforeunload", warnBeforeLeaving)
     gameState.gameTimer = setInterval(moveSnake, gameState.speed)
   },
 
@@ -102,10 +110,13 @@ function resetGame() {
 
   drawSnake()
   randomFood()
+  gameState.phase = "ready"
 }
 
 function gameOver() {
   gameState.stopGame()
+  gameState.phase = "flashing"
+  window.removeEventListener("beforeunload", warnBeforeLeaving)
 
   let switches = 0
   snake.flashTimer = setInterval(function () {
@@ -187,6 +198,9 @@ document.addEventListener("keydown", function (event) {
     return
   }
   event.preventDefault()
+  if (gameState.phase !== "playing") {
+    return
+  }
   if (newDirX + lastDirX === 0 && newDirY + lastDirY === 0) {
     return
   }
@@ -249,6 +263,9 @@ document.getElementById("hard-btn").addEventListener("click", function () {
 })
 
 document.getElementById("start-game").addEventListener("click", function () {
+  if (gameState.phase !== "ready") {
+    return
+  }
   gameState.startGame()
 })
 
