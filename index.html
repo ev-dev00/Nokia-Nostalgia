@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nokia Nostalgia</title>
     <link rel="stylesheet" href="css/resets.css" />
-    <link rel="stylesheet" href="css/color-palette.css" />
-    <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/styles.css" />
+    <script src="scripts/main.js" defer></script>
 
   </head>
 </head>
@@ -15,7 +14,7 @@
     <main id ="app">
          <section id="start-screen">
             <h1> GAME TITLE </h2>
-            <div id="info-wrapper">
+            <div id="rules">
                 <h2>RULES</h2>
                 <p>Here will be the rules Here will be the rules 
                     Here will be the rules Here will be the rules 
@@ -27,21 +26,25 @@
                 <button>NORMAL</button>
                 <button>HARD</button>
             </div>
-            <div id="btn">
+            <div id="play-btn-wrapper">
                 <p>Press Enter to start</p>
                 <button>START!</button>
             </div>
          </section>
          <section id="play-screen">
-            <p> Score: <span class="score">-</span> <p>
             <p> High Score: <span class="high-score">-</span> </p>
-            <div class="cell"></div>
-            <button>Pause</button>
+            <p> Score: <span class="score">-</span> <p>
+            <div class="board">
+            </div>
          </section>
-         <section id="end-screen"></section>
+
+         <section id="end-screen">
+            
+
+         </section>
     </main>
-    <footer>
-        <script src="scripts/main.js"></script>
+    <footer id="tag">
+        <p>Game made by, <span id="creators">participants...</span></p>
     </footer>
 </body>
 </html>
