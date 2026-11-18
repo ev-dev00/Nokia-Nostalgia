@@ -20,12 +20,33 @@ function createBoard(rows, col) {
 }
 
 const jungle = createBoard(31, 31)
-const rows = 31
-const cols = 31
 
 const gameState = {
   score: 0,
   highScore: 0,
+
+  updateScore: function () {
+    const scoreElement = document.getElementById("score")
+    scoreElement.textContent = gameState.score
+  },
+
+  speed: 150,
+  level: {
+    easy: 250,
+    normal: 150,
+    hard: 80,
+  },
+
+  gameTimer: null,
+
+  startGame: function () {
+    clearInterval(gameState.gameTimer)
+    gameState.gameTimer = setInterval(moveSnake, gameState.speed)
+  },
+
+  stopGame: function () {
+    clearInterval(gameState.gameTimer)
+  },
 }
 
 const snake = {
@@ -55,12 +76,12 @@ const placeFood = function (x, y) {
 }
 
 function randomFood() {
-  let x = Math.floor(Math.random() * cols)
-  let y = Math.floor(Math.random() * rows)
+  let x = Math.floor(Math.random() * jungle[0].length)
+  let y = Math.floor(Math.random() * jungle.length)
 
   while (snake.isHere(x, y)) {
-    x = Math.floor(Math.random() * cols)
-    y = Math.floor(Math.random() * rows)
+    x = Math.floor(Math.random() * jungle[0].length)
+    y = Math.floor(Math.random() * jungle.length)
   }
   placeFood(x, y)
 }
@@ -139,6 +160,7 @@ function moveSnake() {
 
   if (ateFood) {
     gameState.score++
+    gameState.updateScore()
     randomFood()
   } else {
     snake.body.pop()
@@ -146,6 +168,22 @@ function moveSnake() {
   drawSnake()
 }
 
+document.getElementById("easy-btn").addEventListener("click", function () {
+  gameState.speed = gameState.level.easy
+})
+
+document.getElementById("normal-btn").addEventListener("click", function () {
+  gameState.speed = gameState.level.normal
+})
+
+document.getElementById("hard-btn").addEventListener("click", function () {
+  gameState.speed = gameState.level.hard
+})
+
+document.getElementById("start-game").addEventListener("click", function () {
+  gameState.startGame()
+})
+
 drawSnake()
 randomFood()
-setInterval(moveSnake, 200)
+gameState.updateScore()
