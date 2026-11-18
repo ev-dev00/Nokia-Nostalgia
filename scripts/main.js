@@ -76,9 +76,6 @@ function drawSnake() {
   }
 }
 
-let dirX = 0
-let dirY = -1
-
 function undrawSnake() {
   for (let i = 0; i < snake.body.length; i++) {
     const x = snake.body[i][0]
@@ -88,7 +85,15 @@ function undrawSnake() {
   }
 }
 
+let dirX = 0
+let dirY = -1
+let lastDirX = 0
+let lastDirY = -1
+
+let score = 0
 function moveSnake() {
+  lastDirX = dirX
+  lastDirY = dirY
   undrawSnake()
 
   const newX = snake.body[0][0] + dirX
@@ -104,6 +109,7 @@ function moveSnake() {
   }
 
   if (ateFood) {
+    score++
     randomFood()
   } else {
     snake.body.pop()
@@ -111,6 +117,32 @@ function moveSnake() {
   drawSnake()
 }
 
+document.addEventListener("keydown", function (event) {
+  let newDirX = dirX
+  let newDirY = dirY
+  if (event.key === "ArrowUp") {
+    newDirX = 0
+    newDirY = -1
+  } else if (event.key === "ArrowDown") {
+    newDirX = 0
+    newDirY = 1
+  } else if (event.key === "ArrowLeft") {
+    newDirX = -1
+    newDirY = 0
+  } else if (event.key === "ArrowRight") {
+    newDirX = 1
+    newDirY = 0
+  } else {
+    return
+  }
+  event.preventDefault()
+  if (newDirX + lastDirX === 0 && newDirY + lastDirY === 0) {
+    return
+  }
+  dirX = newDirX
+  dirY = newDirY
+})
+
 drawSnake()
 randomFood()
-moveSnake()
+setInterval(moveSnake, 200)
