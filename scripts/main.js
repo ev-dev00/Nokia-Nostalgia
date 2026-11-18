@@ -23,22 +23,26 @@ const jungle = createBoard(31, 31)
 const rows = 31
 const cols = 31
 
-let snake = {
+const gameState = {
+  score: 0,
+  highScore: 0,
+}
+
+const snake = {
   name: "nagini",
   body: [
     [15, 14],
     [15, 15],
     [15, 16],
   ],
-}
-
-function isOnSnake(x, y) {
-  for (let i = 0; i < snake.body.length; i++) {
-    if (snake.body[i][0] === x && snake.body[i][1] === y) {
-      return true
+  isHere: function (x, y) {
+    for (let i = 0; i < snake.body.length; i++) {
+      if (snake.body[i][0] === x && snake.body[i][1] === y) {
+        return true
+      }
     }
-  }
-  return false
+    return false
+  },
 }
 
 let foodPosition = null
@@ -54,7 +58,7 @@ function randomFood() {
   let x = Math.floor(Math.random() * cols)
   let y = Math.floor(Math.random() * rows)
 
-  while (isOnSnake(x, y)) {
+  while (snake.isHere(x, y)) {
     x = Math.floor(Math.random() * cols)
     y = Math.floor(Math.random() * rows)
   }
@@ -90,33 +94,6 @@ let dirY = -1
 let lastDirX = 0
 let lastDirY = -1
 
-let score = 0
-function moveSnake() {
-  lastDirX = dirX
-  lastDirY = dirY
-  undrawSnake()
-
-  const newX = snake.body[0][0] + dirX
-  const newY = snake.body[0][1] + dirY
-
-  snake.body.unshift([newX, newY])
-
-  let ateFood = false
-  if (newX === foodPosition[0]) {
-    if (newY === foodPosition[1]) {
-      ateFood = true
-    }
-  }
-
-  if (ateFood) {
-    score++
-    randomFood()
-  } else {
-    snake.body.pop()
-  }
-  drawSnake()
-}
-
 document.addEventListener("keydown", function (event) {
   let newDirX = dirX
   let newDirY = dirY
@@ -142,6 +119,32 @@ document.addEventListener("keydown", function (event) {
   dirX = newDirX
   dirY = newDirY
 })
+
+function moveSnake() {
+  lastDirX = dirX
+  lastDirY = dirY
+  undrawSnake()
+
+  const newX = snake.body[0][0] + dirX
+  const newY = snake.body[0][1] + dirY
+
+  snake.body.unshift([newX, newY])
+
+  let ateFood = false
+  if (newX === foodPosition[0]) {
+    if (newY === foodPosition[1]) {
+      ateFood = true
+    }
+  }
+
+  if (ateFood) {
+    gameState.score++
+    randomFood()
+  } else {
+    snake.body.pop()
+  }
+  drawSnake()
+}
 
 drawSnake()
 randomFood()
