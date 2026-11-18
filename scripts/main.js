@@ -21,6 +21,16 @@ function createBoard(rows, col) {
 
 const jungle = createBoard(31, 31)
 
+const rulesBox = document.getElementById("rules-box")
+const gameoverBox = document.getElementById("gameover-box")
+
+function showBox(box) {
+  rulesBox.classList.add("hidden")
+  board.classList.add("hidden")
+  gameoverBox.classList.add("hidden")
+  box.classList.remove("hidden")
+}
+
 function warnBeforeLeaving(event) {
   event.preventDefault()
   event.returnValue = ""
@@ -110,14 +120,12 @@ function resetGame() {
 
   drawSnake()
   randomFood()
-  gameState.phase = "ready"
+  gameState.phase = "over"
+  showBox(gameoverBox)
 }
 
-function gameOver() {
-  gameState.stopGame()
+function flashSnake(whenDone) {
   gameState.phase = "flashing"
-  window.removeEventListener("beforeunload", warnBeforeLeaving)
-
   let switches = 0
   snake.flashTimer = setInterval(function () {
     snake.flashShake()
@@ -125,9 +133,16 @@ function gameOver() {
 
     if (switches === 10) {
       clearInterval(snake.flashTimer)
-      resetGame()
+      whenDone()
     }
   }, 300)
+}
+
+function gameOver() {
+  document.getElementById("final-score").textContent = gameState.score
+  gameState.stopGame()
+  window.removeEventListener("beforeunload", warnBeforeLeaving)
+  flashSnake(resetGame)
 }
 
 let foodPosition = null
@@ -262,11 +277,21 @@ document.getElementById("hard-btn").addEventListener("click", function () {
   gameState.speed = gameState.level.hard
 })
 
-document.getElementById("start-game").addEventListener("click", function () {
-  if (gameState.phase !== "ready") {
+function startRound() {
+  if (gameState.phase !== "ready" && gameState.phase !== "over") {
     return
   }
-  gameState.startGame()
+  showBox(board)
+  flashSnake(gameState.startGame)
+}
+
+document.getElementById("start-game").addEventListener("click", startRound)
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault()
+    startRound()
+  }
 })
 
 drawSnake()

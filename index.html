@@ -10,18 +10,53 @@
   </head>
   <body class="page-wrapper">
     <main id="app">
-      <section id="start-screen">
-        <h2>GAME TITLE</h2>
-        <div id="rules">
+      <h1>GAME TITLE</h1>
+
+      <div id="score-bar">
+        <p>High Score: <span id="high-score">-</span></p>
+        <p>Score: <span id="score">0</span></p>
+      </div>
+
+      <div id="stage">
+        <div id="rules-box">
           <h2>RULES</h2>
-          <p>
-            Here will be the rules Here will be the rules Here will be the rules
-            Here will be the rules Here will be the rules Here will be the rules
-            Here will be the rules
-          </p>
+          <ul>
+            <li>
+              Pick a difficulty: EASY, NORMAL or HARD (the harder, the faster
+              the snake).
+            </li>
+            <li>
+              Press Enter or click START. The snake flashes 5 times, then starts
+              moving.
+            </li>
+            <li>
+              Use the arrow keys to steer the snake. You cannot turn back on
+              yourself.
+            </li>
+            <li>Eat the white food to grow longer and get +1 point.</li>
+            <li>
+              Do not hit the walls or your own body. If you do, it's GAME OVER.
+            </li>
+            <li>
+              Your High Score is saved in your browser, so it stays after you
+              leave.
+            </li>
+            <li>On the Game Over screen, press Enter to play again.</li>
+          </ul>
         </div>
+
+        <div class="board hidden"></div>
+
+        <div id="gameover-box" class="hidden">
+          <h2>GAME OVER</h2>
+          <p>Score: <span id="final-score">0</span></p>
+          <p>Press Enter to play again</p>
+        </div>
+      </div>
+
+      <div id="controls">
         <div id="challenge-wrapper">
-            <p>Choose your Difficulty</p>
+          <p>Choose your Difficulty</p>
           <button id="easy-btn">EASY</button>
           <button id="normal-btn">NORMAL</button>
           <button id="hard-btn">HARD</button>
@@ -30,15 +65,9 @@
           <p>Press Enter to start</p>
           <button id="start-game">START!</button>
         </div>
-      </section>
-      <section id="play-screen">
-        <p>High Score: <span id="high-score">-</span></p>
-        <p>Score: <span id="score">0</span></p>
-        <div class="board"></div>
-      </section>
-
-      <section id="end-screen"></section>
+      </div>
     </main>
+
     <footer id="tag">
       <p>Game made by, <span id="creators">participants...</span></p>
     </footer>

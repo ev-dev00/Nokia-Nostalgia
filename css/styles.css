@@ -1,21 +1,18 @@
-.hidden {
-  display: none;
-}
-
 #app,
-#start-screen,
-#play-screen,
-#end-screen,
+#stage,
+#rules-box,
+#gameover-box,
 #tag {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#rules {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+#rules-box,
+#gameover-box {
+  border: 2px solid #fff;
+  width: 620px;
+  height: 620px;
 }
 
 #play-btn-wrapper {
@@ -32,7 +29,6 @@
 
 .cell {
   background-color: rgb(90, 153, 99);
-  border: 1px solid color #fff;
 }
 
 .food {
@@ -49,4 +45,8 @@
 
 .flash {
   background-color: rgb(90, 153, 99);
+}
+
+.hidden {
+  display: none !important;
 }
